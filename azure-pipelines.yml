@@ -1,0 +1,50 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'x86'
+  buildConfiguration: 'Release'
+  stage: 'dev'
+  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  appxPackageAppxmanifestDir: '.\ToastNotificationException\Package.appxmanifest'
+  appxPackageId: 'ContosoInc.ToastNotificationException'
+  appxPackageDisplayName: 'ToastNotificationException'
+  releaseNotesBuildInfo: '$(Build.Reason) - $(Build.SourceBranchName) - $(Build.SourceBranch)'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'config'
+
+- task: VSBuild@1
+  inputs:
+    platform: '$(buildPlatform)'
+    solution: '$(solution)'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=true'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact: drop'
+  inputs:
+    PathToPublish: '$(appxPackageDir)'
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'ToastNotificationException\UiTests\bin\Release\'
+    ArtifactName: 'tests'
+  condition: succeededOrFailed()
