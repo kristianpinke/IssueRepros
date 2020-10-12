@@ -26,24 +26,28 @@ namespace ToastNotificationException
 
         private async void ShowNotification_OnClick(object sender, RoutedEventArgs e)
         {
-            var uri = new Uri("ms-appx:///Assets/StoreSolo.png");
-            var toastCollection = new ToastCollection(ToastCollectionId, "ContosoInc", "Args", uri);
-
-            await ToastNotificationManager.GetDefault().GetToastCollectionManager().SaveToastCollectionAsync(toastCollection);
-
-            _toastNotifierManager = await ToastNotificationManager.GetDefault().GetToastNotifierForToastCollectionIdAsync(ToastCollectionId);
-
-            var toastsHistory = ToastNotificationManager.History.GetHistory().ToList();
-
-            foreach (var toast in toastsHistory)
+            Task.Run(async () =>
             {
-                lock (_toastNotifierManager)
-                {
-                    _toastNotifierManager.Hide(toast);
-                }
-            }
+                var uri = new Uri("ms-appx:///Assets/StoreSolo.png");
+                var toastCollection = new ToastCollection(ToastCollectionId, "ContosoInc", "Args", uri);
 
-            await ShowDownloadNotification("status", 2, "tag");
+                await ToastNotificationManager.GetDefault().GetToastCollectionManager().SaveToastCollectionAsync(toastCollection);
+
+                _toastNotifierManager = await ToastNotificationManager.GetDefault().GetToastNotifierForToastCollectionIdAsync(ToastCollectionId);
+
+                var toastsHistory = ToastNotificationManager.History.GetHistory().ToList();
+
+                foreach (var toast in toastsHistory)
+                {
+                    lock (_toastNotifierManager)
+                    {
+                        _toastNotifierManager.Hide(toast);
+                    }
+                }
+
+                await ShowDownloadNotification("status", 2, "tag");
+            });
+            
         }
 
         public async Task ShowDownloadNotification(string status, int numberOfParts, string tag)
