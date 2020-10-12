@@ -32,6 +32,13 @@ namespace ToastNotificationException
 
             var toastsHistory = ToastNotificationManager.History.GetHistory().ToList();
 
+            foreach (var toast in toastsHistory)
+            {
+                lock (_toastNotifierManager)
+                {
+                    _toastNotifierManager.Hide(toast);
+                }
+            }
         }
     }
 }
