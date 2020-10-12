@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,6 +29,8 @@ namespace ToastNotificationException
             await ToastNotificationManager.GetDefault().GetToastCollectionManager().SaveToastCollectionAsync(toastCollection);
 
             _toastNotifierManager = await ToastNotificationManager.GetDefault().GetToastNotifierForToastCollectionIdAsync(ToastCollectionId);
+
+            var toastsHistory = ToastNotificationManager.History.GetHistory().ToList();
 
         }
     }
