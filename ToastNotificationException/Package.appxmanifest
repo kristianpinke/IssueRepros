@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>ToastNotificationException</DisplayName>
-    <PublisherDisplayName>krist</PublisherDisplayName>
+    <PublisherDisplayName>Contoso Inc.</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

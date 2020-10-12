@@ -10,7 +10,7 @@ namespace UiTests
     public class TestSession
     {
         private const string WinAppDriverUrl = "http://127.0.0.1:4723";
-        private const string ContosoIncAppId = "537e8651-54c5-47ab-8409-105e387c86e0_915j3m6y7acyw!App";
+        private const string ContosoIncAppId = "ContosoInc.ToastNotificationException_jd6022dj1txjy!App";
 
         protected static WindowsDriver<WindowsElement> Session;
 
